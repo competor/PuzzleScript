@@ -56,7 +56,7 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 * stop the playing music (why???)
 
-* also, change the BGM. for wxample, if you go to the next level.
+* also, change the BGM. for example, if you go to the next level.
 
 * change the tone.
 
