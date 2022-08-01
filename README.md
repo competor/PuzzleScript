@@ -36,7 +36,7 @@ for example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo(bpm)=120 volu
 
 `;` make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc.
 
-`/: cder :/ gedcdedr ` repeat one time.
+`/: cder :/ gedcdedr` repeat one time.
 
 `[ ]` play multi notes in same time (chord). 
 
@@ -45,7 +45,7 @@ for example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo(bpm)=120 volu
 
 ## Can't do this:
 
-* play music in-game (now only works in-editor.)
+* play music in-game (now only works in-editor lol.)
 
 * stop music
 
