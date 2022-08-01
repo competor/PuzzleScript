@@ -1,6 +1,6 @@
-# PuzzleScript MML
+# PuzzleScript MML (WIP)
 
-play music in puzzleScript.
+play music in puzzleScript. you can use as BGM or melodious SFX.
 
 MML https://en.wikipedia.org/wiki/Music_Macro_Language
 
@@ -20,9 +20,11 @@ for example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo(bpm)=120 volu
 
 `c+8` represents a C# eighth note, `cdefgab` with `+`(sharp), `-`(flat).
 
-`r` `r8` rest note.
+`r` or `r8` rest note.
 
-`<`, `>` step up or down one octave. `o` set octave.
+`o` set octave.
+
+`<`, `>` step up or down one octave. 
 
 `t` tempo(bpm)
 
