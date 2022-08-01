@@ -60,4 +60,4 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 * change the tone.
 
-* no error message is shown in editor console if your MML is wrong. watch browser's console log.
+* no error message is shown in editor console if your MML is wrong. watch browser's console log. (Search "SyntaxError: Unexpected token: xx")
