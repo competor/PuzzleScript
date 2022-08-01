@@ -42,7 +42,7 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 `;` Make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc.
 
-`/: cder :/ gedcdedr` Repeat one time.
+`/: cder :/ gedcdedr` Repeat one time. Also you can nest them, tricky: `/: c /: d /: e :/ f :/ g :/` Do not repeat the slash like `://:`. Please insert a space: `:/ /:` 
 
 `[ ]` Play multi notes in same time (chord). `v50q40 /: g4 l2 [ b>df+ ] d4 l2 [a>c+f+] :/`
 
