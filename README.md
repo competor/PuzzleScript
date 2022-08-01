@@ -16,6 +16,7 @@ for example, `t120 v80 l8 o4 cdefg>gfedc` represents `tempo(bpm)=120 volume=80[0
 `;` to make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc.
 `/: :` repeat one time.
 `[ ]` play multi notes in same time(chord). 
+`$` inifinite loop the song.
 
 ============
 Can't do this:
