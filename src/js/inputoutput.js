@@ -645,6 +645,7 @@ function checkKey(e,justPressed) {
         	if (titleScreen===false) {
 				goToTitleScreen();	
 		    	tryPlayTitleSound();
+				tryPlayTitleMusic();
 				canvasResize();			
 				return prevent(e)
         	}
@@ -739,6 +740,7 @@ function checkKey(e,justPressed) {
 					if (inputdir===4&&justPressed) {
 						if (titleSelected===false) {    				
 							tryPlayStartGameSound();
+							tryPlayStartGameMusic();
 							titleSelected=true;
 							messageselected=false;
 							timer=0;
@@ -752,6 +754,7 @@ function checkKey(e,justPressed) {
 					if (inputdir==4&&justPressed) {
 						if (titleSelected===false) {    				
 							tryPlayStartGameSound();
+							tryPlayStartGameMusic();
 							titleSelected=true;
 							messageselected=false;
 							timer=0;
@@ -781,6 +784,7 @@ function checkKey(e,justPressed) {
     				timer=0;
     				quittingMessageScreen=true;
     				tryPlayCloseMessageSound();
+					tryPlayCloseMessageMusic();
     				titleScreen=false;
     				drawMessageScreen();
     			}

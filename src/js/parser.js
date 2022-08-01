@@ -234,31 +234,36 @@ var codeMirrorFn = function() {
     const absolutedirs = ['up', 'down', 'right', 'left'];
     const relativedirs = ['^', 'v', '<', '>', 'moving','stationary','parallel','perpendicular', 'no'];
     const logicWords = ['all', 'no', 'on', 'some'];
-    const sectionNames = ['objects', 'legend', 'sounds', 'collisionlayers', 'rules', 'winconditions', 'levels'];
-	const commandwords = ["sfx0","sfx1","sfx2","sfx3","sfx4","sfx5","sfx6","sfx7","sfx8","sfx9","sfx10","cancel","checkpoint","restart","win","message","again"];
-    const reg_commands = /[\p{Z}\s]*(sfx0|sfx1|sfx2|sfx3|Sfx4|sfx5|sfx6|sfx7|sfx8|sfx9|sfx10|cancel|checkpoint|restart|win|message|again)[\p{Z}\s]*/u;
+    const sectionNames = ['objects', 'legend', 'sounds', 'musics' , 'collisionlayers', 'rules', 'winconditions', 'levels'];
+	const commandwords = ["sfx0","sfx1","sfx2","sfx3","sfx4","sfx5","sfx6","sfx7","sfx8","sfx9","sfx10","bgm0","bgm1","bgm2","bgm3","bgm4","bgm5","bgm6","bgm7","bgm8","bgm9","bgm10","cancel","checkpoint","restart","win","message","again"];
+    const reg_commands = /[\p{Z}\s]*(sfx0|sfx1|sfx2|sfx3|Sfx4|sfx5|sfx6|sfx7|sfx8|sfx9|sfx10|bgm0|bgm1|bgm2|bgm3|Sfx4|bgm5|bgm6|bgm7|bgm8|bgm9|bgm10|cancel|checkpoint|restart|win|message|again)[\p{Z}\s]*/u;
     const reg_name = /[\p{L}\p{N}_]+[\p{Z}\s]*/u;///\w*[a-uw-zA-UW-Z0-9_]/;
     const reg_number = /[\d]+/;
     const reg_soundseed = /\d+\b/u;
+    const reg_mml = /^".*?"$/u; // based on mml-emitter.js : MMLParser
     const reg_spriterow = /[\.0-9]{5}[\p{Z}\s]*/u;
-    const reg_sectionNames = /(objects|collisionlayers|legend|sounds|rules|winconditions|levels)(?![\p{L}\p{N}_])[\p{Z}\s]*/u;
+    const reg_sectionNames = /(objects|collisionlayers|legend|sounds|musics|rules|winconditions|levels)(?![\p{L}\p{N}_])[\p{Z}\s]*/u;
     const reg_equalsrow = /[\=]+/;
     const reg_notcommentstart = /[^\(]+/;
     const reg_match_until_commentstart_or_whitespace = /[^\p{Z}\s\()]+[\p{Z}\s]*/u;
     const reg_csv_separators = /[ \,]*/;
     const reg_soundverbs = /(move|action|create|destroy|cantmove)\b[\p{Z}\s]*/u;
+    const reg_musicverbs = /(move|action|create|destroy|cantmove)\b[\p{Z}\s]*/u;
     const soundverbs_directional = ['move','cantmove'];
+    const musicverbs_directional = ['move','cantmove'];
     const reg_soundverbs_directional = /(move|cantmove)\b[\p{Z}\s]*/u;
     const reg_soundverbs_nondirectional = /(action|create|destroy)\b[\p{Z}\s]*/u;
     const reg_soundevents = /(undo|restart|titlescreen|startgame|cancel|endgame|startlevel|endlevel|showmessage|closemessage|sfx0|sfx1|sfx2|sfx3|sfx4|sfx5|sfx6|sfx7|sfx8|sfx9|sfx10)\b[\p{Z}\s]*/u;
+    const reg_musicevents = /(undo|restart|titlescreen|startgame|cancel|endgame|startlevel|endlevel|showmessage|closemessage|bgm0|bgm1|bgm2|bgm3|bgm4|bgm5|bgm6|bgm7|bgm8|bgm9|bgm10)\b[\p{Z}\s]*/u;
 
     const reg_directions = /^(action|up|down|left|right|\^|v|\<|\>|moving|stationary|parallel|perpendicular|horizontal|orthogonal|vertical|no|randomdir|random)$/;
     const reg_loopmarker = /^(startloop|endloop)$/;
     const reg_ruledirectionindicators = /^(up|down|left|right|horizontal|vertical|orthogonal|late|rigid)$/;
     const reg_sounddirectionindicators = /[\p{Z}\s]*(up|down|left|right|horizontal|vertical|orthogonal)(?![\p{L}\p{N}_])[\p{Z}\s]*/u;
+    const reg_musicdirectionindicators = /[\p{Z}\s]*(up|down|left|right|horizontal|vertical|orthogonal)(?![\p{L}\p{N}_])[\p{Z}\s]*/u;
     const reg_winconditionquantifiers = /^(all|any|no|some)$/;
-    const reg_keywords = /(checkpoint|objects|collisionlayers|legend|sounds|rules|winconditions|\.\.\.|levels|up|down|left|right|^|\||\[|\]|v|\>|\<|no|horizontal|orthogonal|vertical|any|all|no|some|moving|stationary|parallel|perpendicular|action|move|action|create|destroy|cantmove|sfx0|sfx1|sfx2|sfx3|Sfx4|sfx5|sfx6|sfx7|sfx8|sfx9|sfx10|cancel|checkpoint|restart|win|message|again|undo|restart|titlescreen|startgame|cancel|endgame|startlevel|endlevel|showmessage|closemessage)/;
-    const keyword_array = ['checkpoint','objects', 'collisionlayers', 'legend', 'sounds', 'rules', '...','winconditions', 'levels','|','[',']','up', 'down', 'left', 'right', 'late','rigid', '^','v','\>','\<','no','randomdir','random', 'horizontal', 'vertical','any', 'all', 'no', 'some', 'moving','stationary','parallel','perpendicular','action','message', "move", "action", "create", "destroy", "cantmove", "sfx0", "sfx1", "sfx2", "sfx3", "Sfx4", "sfx5", "sfx6", "sfx7", "sfx8", "sfx9", "sfx10", "cancel", "checkpoint", "restart", "win", "message", "again", "undo", "restart", "titlescreen", "startgame", "cancel", "endgame", "startlevel", "endlevel", "showmessage", "closemessage"];
+    const reg_keywords = /(checkpoint|objects|collisionlayers|legend|sounds|musics|rules|winconditions|\.\.\.|levels|up|down|left|right|^|\||\[|\]|v|\>|\<|no|horizontal|orthogonal|vertical|any|all|no|some|moving|stationary|parallel|perpendicular|action|move|action|create|destroy|cantmove|sfx0|sfx1|sfx2|sfx3|Sfx4|sfx5|sfx6|sfx7|sfx8|sfx9|sfx10|bgm0|bgm1|bgm2|bgm3|bgm4|bgm5|bgm6|bgm7|bgm8|bgm9|bgm10|cancel|checkpoint|restart|win|message|again|undo|restart|titlescreen|startgame|cancel|endgame|startlevel|endlevel|showmessage|closemessage)/;
+    const keyword_array = ['checkpoint','objects', 'collisionlayers', 'legend', 'sounds','musics', 'rules', '...','winconditions', 'levels','|','[',']','up', 'down', 'left', 'right', 'late','rigid', '^','v','\>','\<','no','randomdir','random', 'horizontal', 'vertical','any', 'all', 'no', 'some', 'moving','stationary','parallel','perpendicular','action','message', "move", "action", "create", "destroy", "cantmove", "sfx0", "sfx1", "sfx2", "sfx3", "Sfx4", "sfx5", "sfx6", "sfx7", "sfx8", "sfx9", "sfx10", "bgm0", "bgm1", "bgm2", "bgm3", "bgm4", "bgm5", "bgm6", "bgm7", "bgm8", "bgm9", "bgm10", "cancel", "checkpoint", "restart", "win", "message", "again", "undo", "restart", "titlescreen", "startgame", "cancel", "endgame", "startlevel", "endlevel", "showmessage", "closemessage"];
 
     function errorFallbackMatchToken(stream){
         var match=stream.match(reg_match_until_commentstart_or_whitespace, true);
@@ -453,6 +458,21 @@ var codeMirrorFn = function() {
             soundrow.push(state.lineNumber);
             state.sounds.push(soundrow);
         }
+
+    }
+    function processMusicsLine(state){
+        // if (state.current_line_wip_array.length===0){
+        //     return;
+        // }
+        // //if last entry in array is 'ERROR', do nothing
+        // if (state.current_line_wip_array[state.current_line_wip_array.length-1]==='ERROR'){
+
+        // } else {
+        //     //take the first component from each pair in the array
+        //     var musicrow = state.current_line_wip_array;//.map(function(a){return a[0];});
+        //     musicrow.push(state.lineNumber);
+        //     state.musics.push(musicrow);
+        // }
 
     }
 
@@ -1206,6 +1226,200 @@ var codeMirrorFn = function() {
 
                     break;
                 }
+            case 'musics': // competor
+                {
+                    /*
+                    SOUND DEFINITION:
+                        SOUNDEVENT ~ INT (Sound events take precedence if there's name overlap)
+                        OBJECT_NAME
+                            NONDIRECTIONAL_VERB ~ INT
+                            DIRECTIONAL_VERB
+                                INT
+                                DIR+ ~ INT
+                    */
+                    var tokentype="";
+
+                    if (state.current_line_wip_array.length>0 && state.current_line_wip_array[state.current_line_wip_array.length-1]==='ERROR'){
+                        // match=stream.match(reg_notcommentstart, true);
+                        //if there was an error earlier on the line just try to do greedy matching here
+                        var match = null;
+
+                        //events
+                        if (match === null) { 
+                            match = stream.match(reg_musicevents, true);
+                            if (match !== null) { 
+                                tokentype = 'MUSICEVENT';
+                            }
+                        }
+
+                        //verbs
+                        if (match === null) { 
+                            match = stream.match(reg_musicverbs, true);
+                            if (match !== null) {
+                                tokentype = 'MUSICVERB';
+                            }
+                        }
+                        //directions
+                        if (match === null) { 
+                            match = stream.match(reg_musicdirectionindicators, true);
+                            if (match !== null) {
+                                tokentype = 'DIRECTION';
+                            }
+                        }
+
+                        //sound seeds
+                        if (match === null) {                                           
+                            var match = stream.match(reg_mml, true);
+                            if (match !== null)
+                            {
+                                tokentype = 'MUSIC'; // competor ?
+                            }
+                        }
+
+                        //objects
+                        if (match === null) { 
+                            match = stream.match(reg_name, true);
+                            if (match !== null) {
+                                if (wordAlreadyDeclared(state, match[0])){
+                                    tokentype = 'NAME';
+                                } else {
+                                    tokentype = 'ERROR';                   
+                                }
+                            }                          
+                        }
+
+                        //error
+                        if (match === null) { 
+                            match = errorFallbackMatchToken(stream);
+                            tokentype = 'ERROR';                            
+                        }
+
+
+                    } else if (state.current_line_wip_array.length===0){
+                        //can be OBJECT_NAME or SOUNDEVENT
+                        var match = stream.match(reg_musicevents, true);
+                        if (match == null){
+                            match = stream.match(reg_name, true);
+                            if (match == null ){
+                                tokentype = 'ERROR';
+                                match=errorFallbackMatchToken(stream);
+                                state.current_line_wip_array.push("ERROR");
+                                logWarning("Was expecting a music event (like BGM3, or ENDLEVEL) or an object name, but didn't find either.", state.lineNumber);                        
+                            } else {
+                                var matched_name = match[0].trim();
+                                if (!wordAlreadyDeclared(state, matched_name)){                 
+                                    tokentype = 'ERROR';
+                                    state.current_line_wip_array.push("ERROR");
+                                    logError(`unexpected music token "${matched_name}".`, state.lineNumber);
+                                } else {                                    
+                                    tokentype = 'NAME';
+                                    state.current_line_wip_array.push([matched_name,tokentype]);    
+                                    state.tokenIndex++;
+                                }
+                            }
+                        } else {
+                            tokentype = 'MUSICEVENT';
+                            state.current_line_wip_array.push([match[0].trim(),tokentype]);  
+                            state.tokenIndex++;  
+                        }
+
+                    } else if (state.current_line_wip_array.length===1) {
+                        var is_musicevent = state.current_line_wip_array[0][1] === 'MUSICEVENT';
+
+                        if (is_musicevent){                            
+                            var match = stream.match(reg_mml, true);
+                            if (match !== null)
+                            {
+                                tokentype = 'MUSIC';
+                                state.current_line_wip_array.push([match[0].trim(),tokentype]);
+                                state.tokenIndex++;
+                            } else {
+                                match=errorFallbackMatchToken(stream);
+                                logError("Was expecting a music mml here (like \"t100 l8 cegedc\"), but found something else.", state.lineNumber);                                
+                                tokentype = 'ERROR';
+                                state.current_line_wip_array.push("ERROR");
+                            }
+                        } else {
+                            //[0] is object name
+                            //it's a sound verb
+                            var match = stream.match(reg_musicverbs, true);
+                            if (match !== null){
+                                tokentype = 'MUSICVERB';
+                                state.current_line_wip_array.push([match[0].trim(),tokentype]);
+                                state.tokenIndex++;
+                            } else {
+                                match=errorFallbackMatchToken(stream);
+                                logError("Was expecting a musicverb here (MOVE, DESTROY, CANTMOVE, or the like), but found something else.", state.lineNumber);                                
+                                tokentype = 'ERROR';
+                                state.current_line_wip_array.push("ERROR");
+                            }
+                            
+                        }
+                    } else {
+                        var is_musicevent = state.current_line_wip_array[0][1] === 'MUSICEVENT';
+                        if (is_musicevent){
+                            match=errorFallbackMatchToken(stream);
+                            logError(`I wasn't expecting anything after the music declaration ${state.current_line_wip_array[state.current_line_wip_array.length-1][0].toUpperCase()} on this line, so I don't know what to do with "${match[0].trim().toUpperCase()}" here.`, state.lineNumber);
+                            tokentype = 'ERROR';
+                            state.current_line_wip_array.push("ERROR");
+                        } else {                            
+                            //if there's a seed on the right, any additional content is superfluous
+                            var is_seedonright = state.current_line_wip_array[state.current_line_wip_array.length-1][1] === 'MUSIC';
+                            if (is_seedonright){
+                                match=errorFallbackMatchToken(stream);
+                                logError(`I wasn't expecting anything after the music declaration ${state.current_line_wip_array[state.current_line_wip_array.length-1][0].toUpperCase()} on this line, so I don't know what to do with "${match[0].trim().toUpperCase()}" here.`, state.lineNumber);
+                                tokentype = 'ERROR';
+                                state.current_line_wip_array.push("ERROR");
+                            } else {
+                                var directional_verb = musicverbs_directional.indexOf(state.current_line_wip_array[1][0])>=0;    
+                                if (directional_verb){  
+                                    //match seed or direction                          
+                                    var is_direction = stream.match(reg_musicdirectionindicators, true);
+                                    if (is_direction !== null){
+                                        tokentype = 'DIRECTION';
+                                        state.current_line_wip_array.push([is_direction[0].trim(),tokentype]);
+                                        state.tokenIndex++;
+                                    } else {
+                                        var is_seed = stream.match(reg_mml, true);
+                                        if (is_seed !== null){
+                                            tokentype = 'MUSIC';
+                                            state.current_line_wip_array.push([is_seed[0].trim(),tokentype]);
+                                            state.tokenIndex++;
+                                        } else {
+                                            match=errorFallbackMatchToken(stream);
+                                            //depending on whether the verb is directional or not, we log different errors
+                                            logError(`Ah I was expecting direction or a music mml here after ${state.current_line_wip_array[state.current_line_wip_array.length-1][0].toUpperCase()}, but I don't know what to make of "${match[0].trim().toUpperCase()}".`, state.lineNumber);
+                                            tokentype = 'ERROR';
+                                            state.current_line_wip_array.push("ERROR");
+                                        }
+                                    }
+                                } else {
+                                    //only match seed
+                                    var is_seed = stream.match(reg_musicseed, true);
+                                    if (is_seed !== null){
+                                        tokentype = 'MUSIC';
+                                        state.current_line_wip_array.push([is_seed[0].trim(),tokentype]);
+                                        state.tokenIndex++;
+                                    } else {
+                                        match=errorFallbackMatchToken(stream);
+                                        //depending on whether the verb is directional or not, we log different errors
+                                        logError(`Ah I was expecting a music mml here after ${state.current_line_wip_array[state.current_line_wip_array.length-1][0].toUpperCase()}, but I don't know what to make of "${match[0].trim().toUpperCase()}".`, state.lineNumber);
+                                        tokentype = 'ERROR';
+                                        state.current_line_wip_array.push("ERROR");
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (stream.eol()){
+                        processMusicsLine(state);
+                    }     
+
+                    return tokentype;
+
+                    break;
+                }
             case 'collisionlayers':
                 {
                     if (sol) {
@@ -1647,6 +1861,7 @@ var codeMirrorFn = function() {
                 legend_properties: [],
 
                 sounds: [],
+                musics: [],
                 rules: [],
 
                 names: [],

@@ -43,7 +43,9 @@
             "black", "white", "darkgray", "lightgray", "gray", "red", "darkred", "lightred", "brown", "darkbrown", "lightbrown", "orange", "yellow", "green", "darkgreen", "lightgreen", "blue", "lightblue", "darkblue", "purple", "pink", "transparent"];
         var RULE_COMMAND_WORDS = [
             "COMMAND",
-            "sfx0", "sfx1", "sfx2", "sfx3", "sfx4", "sfx5", "sfx6", "sfx7", "sfx8", "sfx9", "sfx10", "cancel", "checkpoint", "restart", "win", "message", "again"];
+            "sfx0", "sfx1", "sfx2", "sfx3", "sfx4", "sfx5", "sfx6", "sfx7", "sfx8", "sfx9", "sfx10", 
+            "bgm0", "bgm1", "bgm2", "bgm3", "bgm4", "bgm5", "bgm6", "bgm7", "bgm8", "bgm9", "bgm10", 
+            "cancel", "checkpoint", "restart", "win", "message", "again"];
 
         var CARDINAL_DIRECTION_WORDS = [
             "DIRECTION",
@@ -64,7 +66,8 @@
 
         var SOUND_EVENTS = [
             "SOUNDEVENT",
-            "undo", "restart", "titlescreen", "startgame", "cancel", "endgame", "startlevel", "endlevel", "showmessage", "closemessage", "sfx0", "sfx1", "sfx2", "sfx3", "sfx4", "sfx5", "sfx6", "sfx7", "sfx8", "sfx9", "sfx10"
+            "undo", "restart", "titlescreen", "startgame", "cancel", "endgame", "startlevel", "endlevel", "showmessage", "closemessage", 
+            "sfx0", "sfx1", "sfx2", "sfx3", "sfx4", "sfx5", "sfx6", "sfx7", "sfx8", "sfx9", "sfx10"
         ];
 
         var SOUND_VERBS = [
@@ -73,6 +76,21 @@
         ];
 
         var SOUND_DIRECTIONS = [
+            "DIRECTION",
+            "up","down","left","right","horizontal","vertical","orthogonal"]
+
+        var MUSIC_EVENTS = [
+            "MUSICEVENT",
+            "undo", "restart", "titlescreen", "startgame", "cancel", "endgame", "startlevel", "endlevel", "showmessage", "closemessage", 
+            "bgm0", "bgm1", "bgm2", "bgm3", "bgm4", "bgm5", "bgm6", "bgm7", "bgm8", "bgm9", "bgm10"
+        ];
+
+        var MUSIC_VERBS = [
+            "MUSICVERB",
+            "move", "action", "create", "destroy", "cantmove"
+        ];
+
+        var MUSIC_DIRECTIONS = [
             "DIRECTION",
             "up","down","left","right","horizontal","vertical","orthogonal"]
 
@@ -224,6 +242,53 @@
                                         break;
                                     }
                                 case "SOUND":
+                                    {
+                                    }
+                            }                                                 
+                        }
+                        break;
+                    }
+                case 'musics':
+                    {
+                        /*
+                        MUSICEVENT MUSIC 
+                        NAME
+                            MUSICVERB <MUSIC>
+                            MUSICVERB
+                                <MUSIC>
+                                DIRECTION+ <SOUND>
+                                */
+                        var last_idx = state.current_line_wip_array.length-1;
+                        if (last_idx>0 && state.current_line_wip_array[last_idx]==="ERROR"){
+                            //if there's an error, just try to match greedily
+                            candlists.push(MUSIC_VERBS);
+                            candlists.push(MUSIC_DIRECTIONS);
+                            candlists.push(MUSIC_EVENTS);
+                            addObjects=true;
+                            excludeAggregates=true;       
+                        } else if (state.current_line_wip_array.length<=1 ){
+                            candlists.push(MUSIC_EVENTS);
+                            addObjects=true;
+                            excludeAggregates=true;                            
+                        } else  {
+                            var lastType =  state.current_line_wip_array[last_idx][1];
+                            switch (lastType){
+                                case "MUSICEVENT":
+                                    {
+                                        break;
+                                    }
+                                case "NAME":
+                                    {
+                                        candlists.push(MUSIC_VERBS);
+                                        break;
+                                    }
+                                case "MUSICVERB":
+                                case "DIRECTION":
+                                    {
+                                        candlists.push(MUSIC_DIRECTIONS);
+                                        break;
+                                    }
+                                case "MUSIC":
                                     {
                                     }
                             }                                                 

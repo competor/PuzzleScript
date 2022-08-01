@@ -93,6 +93,8 @@ var editor = window.CodeMirror.fromTextArea(code, {
 		}
 	});
 	
+var audioContext = new AudioContext();
+
 editor.on('mousedown', function(cm, event) {
   if (event.target.className == 'cm-SOUND') {
     var seed = parseInt(event.target.innerHTML);
@@ -104,8 +106,34 @@ editor.on('mousedown', function(cm, event) {
       prevent(event);         // prevent refocus
       compile(["levelline",cm.posFromMouse(event).line]);
     }
+  } else if (event.target.className == 'cm-MUSIC') {
+	if (event.ctrlKey||event.metaKey) {
+		var mml = convertToMML(event.target.innerHTML);
+		let config = { context: audioContext };
+
+		let mmlEmitter = new MMLEmitter(mml, config);
+
+		mmlEmitter.on("note", (e) => {
+		console.log("NOTE: " + JSON.stringify(e));
+		playNote(e);
+		});
+		mmlEmitter.on("end:all", (e) => {
+		console.log("END : " + JSON.stringify(e));
+		mmlEmitter.stop();
+		});
+	
+		mmlEmitter.start();
+	}
+	
   }
 });
+
+function convertToMML(text){
+	console.log(text);
+	text = text.replace(/[\"]/g,"").replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&nbsp;/g,"");
+	console.log(text);
+	return text;
+}
 
 _editorCleanState = editor.getValue();
 

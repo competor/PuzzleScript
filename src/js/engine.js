@@ -453,6 +453,7 @@ function loadLevelFromLevelDat(state,leveldat,randomseed,clearinputhistory) {
 	} else {
 		ignoreNotJustPressedAction=true;
 		tryPlayShowMessageSound();
+		tryPlayShowMessageMusic();
 		drawMessageScreen();
     	canvasResize();
 	}
@@ -469,8 +470,10 @@ function loadLevelFromStateTarget(state,levelindex,target,randomseed) {
     if (leveldat.message===undefined) {
 	    if (levelindex=== 0){ 
 			tryPlayStartLevelSound();
+			tryPlayStartLevelMusic();
 		} else {
-			tryPlayStartLevelSound();			
+			tryPlayStartLevelSound();
+			tryPlayStartLevelMusic();
 		}
     }
     loadLevelFromLevelDat(state,state.levels[levelindex],randomseed);
@@ -485,8 +488,10 @@ function loadLevelFromState(state,levelindex,randomseed) {
     if (leveldat!==undefined && leveldat.message===undefined) {
 	    if (levelindex=== 0){ 
 			tryPlayStartLevelSound();
+			tryPlayStartLevelMusic();
 		} else {
-			tryPlayStartLevelSound();			
+			tryPlayStartLevelSound();
+			tryPlayStartLevelMusic();
 		}
     }
     loadLevelFromLevelDat(state,leveldat,randomseed);
@@ -567,6 +572,71 @@ function tryPlayShowMessageSound(){
 
 function tryPlayCloseMessageSound(){
 	tryPlaySimpleSound("closemessage");
+}
+
+
+function tryPlaySimpleMusic(musicname) {
+	if (state.bgm_Events[musicname]!==undefined) {
+		console.log("tryPlaySimpleMusic: "+state.bgm_Events[musicname]);
+		var audioContext = new AudioContext();
+
+		var seed = state.bgm_Events[musicname];
+
+		var mml = seed.replace(/[\"]/g,"");
+		let config = { context: audioContext };
+
+		let mmlEmitter = new MMLEmitter(mml, config);
+
+		mmlEmitter.on("note", (e) => {
+		console.log("NOTE: " + JSON.stringify(e));
+		playNote(e);
+		});
+		mmlEmitter.on("end:all", (e) => {
+		console.log("END : " + JSON.stringify(e));
+		mmlEmitter.stop();
+		});
+	
+		mmlEmitter.start();
+	}
+}
+function tryPlayTitleMusic() {
+	tryPlaySimpleMusic("titlescreen");
+}
+
+function tryPlayStartGameMusic() {
+	tryPlaySimpleMusic("startgame");
+}
+
+function tryPlayEndGameMusic() {
+	tryPlaySimpleMusic("endgame");
+}
+
+function tryPlayCancelMusic() {
+	tryPlaySimpleMusic("cancel");
+}
+
+function tryPlayStartLevelMusic() {
+	tryPlaySimpleMusic("startlevel");
+}
+
+function tryPlayEndLevelMusic() {
+	tryPlaySimpleMusic("endlevel");
+}
+
+function tryPlayUndoMusic(){
+	tryPlaySimpleMusic("undo");
+}
+
+function tryPlayRestartMusic(){
+	tryPlaySimpleMusic("restart");
+}
+
+function tryPlayShowMessageMusic(){
+	tryPlaySimpleMusic("showmessage");
+}
+
+function tryPlayCloseMessageMusic(){
+	tryPlaySimpleMusic("closemessage");
 }
 
 var backups=[];
@@ -666,6 +736,7 @@ function setGameState(_state, command, randomseed) {
 		    timer=0;
 		    titleScreen=true;
 		    tryPlayTitleSound();
+			tryPlayTitleMusic();
 		    textMode=true;
 		    titleSelection=showContinueOptionOnTitleScreen()?1:0;
 		    titleSelected=false;
@@ -757,7 +828,7 @@ function setGameState(_state, command, randomseed) {
 	canvasResize();
 
 
-	if (state.sounds.length==0){
+	if (state.sounds.length==0 && state.musics.length==0){
 		killAudioButton();
 	} else {
 		showAudioButton();
@@ -996,6 +1067,7 @@ function DoRestart(force) {
 
 	restoreLevel(restartTarget);
 	tryPlayRestartSound();
+	tryPlayRestartMusic();
 
 	if ('run_rules_on_level_start' in state.metadata) {
     	processInput(-1,true);
@@ -1044,6 +1116,7 @@ function DoUndo(force,ignoreDuplicates) {
 		backups = backups.splice(0,backups.length-1);
 		if (! force) {
 			tryPlayUndoSound();
+			tryPlayUndoMusic();
 		}
 	}
 }
@@ -2319,6 +2392,7 @@ function showTempMessage() {
 	messageselected=false;
 	ignoreNotJustPressedAction=true;
 	tryPlayShowMessageSound();
+	tryPlayShowMessageMusic();
 	drawMessageScreen();
 	canvasResize();
 }
@@ -2327,7 +2401,9 @@ function processOutputCommands(commands) {
 	for (var i=0;i<commands.length;i++) {
 		var command = commands[i];
 		if (command.charAt(1)==='f')  {//identifies sfxN
-			tryPlaySimpleSound(command);
+			tryPlaySimpleSound(command); 
+		} else if (command.charAt(1)==='g'){ //bgmN
+			tryPlaySimpleMusic(command); 
 		}
 		if (unitTesting===false) {
 			if (command==='message') {
@@ -2772,6 +2848,7 @@ function processInput(dir,dontDoWin,dontModify) {
     		addUndoState(bak);
     		DoUndo(true,false);
     		tryPlayCancelSound();
+			tryPlayCancelMusic();
     		return commandsleft;
 	    } 
 
@@ -2837,7 +2914,8 @@ function processInput(dir,dontDoWin,dontModify) {
 		}
 
         for (var i=0;i<seedsToPlay_CantMove.length;i++) {			
-	        	playSound(seedsToPlay_CantMove[i]);
+	        	playSound(seedsToPlay_CantMove[i]); // competor
+				
         }
 
         for (var i=0;i<seedsToPlay_CanMove.length;i++) {
@@ -3034,6 +3112,7 @@ function DoWin() {
 	}
 	againing=false;
 	tryPlayEndLevelSound();
+	tryPlayEndLevelMusic();
 	if (unitTesting) {
 		nextLevel();
 		return;
@@ -3104,6 +3183,7 @@ function nextLevel() {
 			curlevelTarget=null;
 			goToTitleScreen();
 			tryPlayEndGameSound();
+			tryPlayEndGameMusic();
 		}		
 		//continue existing game
 	}

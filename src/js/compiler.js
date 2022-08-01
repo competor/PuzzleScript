@@ -529,7 +529,7 @@ var simpleAbsoluteDirections = ['up', 'down', 'left', 'right'];
 var simpleRelativeDirections = ['^', 'v', '<', '>'];
 var reg_directions_only = /^(\>|\<|\^|v|up|down|left|right|moving|stationary|no|randomdir|random|horizontal|vertical|orthogonal|perpendicular|parallel|action)$/;
 //redeclaring here, i don't know why
-var commandwords = ["sfx0", "sfx1", "sfx2", "sfx3", "sfx4", "sfx5", "sfx6", "sfx7", "sfx8", "sfx9", "sfx10", "cancel", "checkpoint", "restart", "win", "message", "again"];
+var commandwords = ["sfx0", "sfx1", "sfx2", "sfx3", "sfx4", "sfx5", "sfx6", "sfx7", "sfx8", "sfx9", "sfx10", "bgm0", "bgm1", "bgm2", "bgm3", "bgm4", "bgm5", "bgm6", "bgm7", "bgm8", "bgm9", "bgm10","cancel", "checkpoint", "restart", "win", "message", "again"];
 
 
 function directionalRule(rule) {
@@ -2735,7 +2735,191 @@ function generateSoundData(state) {
     state.sfx_MovementMasks = sfx_MovementMasks;
     state.sfx_MovementFailureMasks = sfx_MovementFailureMasks;
 }
+var musicDirectionIndicatorMasks = {
+    'up': parseInt('00001', 2),
+    'down': parseInt('00010', 2),
+    'left': parseInt('00100', 2),
+    'right': parseInt('01000', 2),
+    'horizontal': parseInt('01100', 2),
+    'vertical': parseInt('00011', 2),
+    'orthogonal': parseInt('01111', 2),
+    '___action____': parseInt('10000', 2)
+};
 
+var musicDirectionIndicators = ["up", "down", "left", "right", "horizontal", "vertical", "orthogonal", "___action____"];
+
+function generateMusicData(state){ 
+    var bgm_Events = {};
+    var bgm_CreationMasks = [];
+    var bgm_DestructionMasks = [];
+    var bgm_MovementMasks = state.collisionLayers.map(x => []);
+    var bgm_MovementFailureMasks = [];
+
+    for (var i = 0; i < state.musics.length; i++) {
+        var music = state.musics[i];
+        if (music.length <= 1) {
+            continue;
+        }
+        var lineNumber = music[music.length - 1];
+
+        if (music.length === 2) {
+            logError('incorrect music declaration.', lineNumber);
+            continue;
+        }
+
+        const v0=music[0][0].trim();
+        const t0=music[0][1].trim();
+        const v1=music[1][0].trim();
+        const t1=music[1][1].trim();
+        
+        var seed = music[music.length - 2][0];
+        var seed_t = music[music.length - 2][1];
+        if (seed_t !== 'MUSIC') {
+            logError("Expecting bgm data, instead found \"" + seed + "\".", lineNumber);
+        }
+
+        if (t0 === "MUSICEVENT") {
+
+            if (music.length > 4) {
+                logError("too much stuff to define a music event.", lineNumber);
+            } else {
+                //out of an abundance of caution, doing a fallback warning rather than expanding the scope of the error #779
+                if (music.length > 3) {
+                    logWarning("too much stuff to define a music event.", lineNumber);
+                }
+            }
+
+            if (bgm_Events[v0] !== undefined) {
+                logWarning(v0.toUpperCase() + " already declared.", lineNumber);
+            }
+            bgm_Events[v0] = seed;
+
+        } else {
+            var target = v0;
+            var verb = v1;
+            var directions = [];
+            for (var j=2;j<music.length-2;j++){//avoid last music declaration as well as the linenumber element at the end
+                if (music[j][1] === 'DIRECTION') {
+                    directions.push(music[j][0]);      
+                } else {
+                    //Don't know how if I can get here, but just in case
+                    logError(`Expected a direction here, but found instead "$(music[j][0])".`, lineNumber);
+                }
+            }
+            if (directions.length > 0 && (verb !== 'move' && verb !== 'cantmove')) {
+                logError('Incorrect music declaration - cannot have directions (UP/DOWN/etc.) attached to non-directional music verbs (CREATE is not directional, but MOVE is directional).', lineNumber);
+            }
+
+            if (verb === 'action') {
+                verb = 'move';
+                directions = ['___action____'];
+            }
+
+            if (directions.length == 0) {
+                directions = ["orthogonal"];
+            }
+            
+
+            if (target in state.aggregatesDict) {
+                logError('cannot assign music events to aggregate objects (declared with "and"), only to regular objects, or properties, things defined in terms of "or" ("' + target + '").', lineNumber);
+            } else if (target in state.objectMasks) {
+
+            } else {
+                logError('Object "' + target + '" not found.', lineNumber);
+            }
+
+            var objectMask = state.objectMasks[target];
+
+            var directionMask = 0;
+            for (var j = 0; j < directions.length; j++) {
+                directions[j] = directions[j].trim();
+                var direction = directions[j];
+                if (musicDirectionIndicators.indexOf(direction) === -1) {
+                    logError('Was expecting a direction, instead found "' + direction + '".', lineNumber);
+                } else {
+                    var musicDirectionMask = musicDirectionIndicatorMasks[direction];
+                    directionMask |= musicDirectionMask;
+                }
+            }
+
+
+            var targets = [target];
+            var modified = true;
+            while (modified) {
+                modified = false;
+                for (var k = 0; k < targets.length; k++) {
+                    var t = targets[k];
+                    if (t in state.synonymsDict) {
+                        targets[k] = state.synonymsDict[t];
+                        modified = true;
+                    } else if (t in state.propertiesDict) {
+                        modified = true;
+                        var props = state.propertiesDict[t];
+                        targets.splice(k, 1);
+                        k--;
+                        for (var l = 0; l < props.length; l++) {
+                            targets.push(props[l]);
+                        }
+                    }
+                }
+            }
+            
+            //if verb in musicverbs_directional
+            if (verb === 'move' || verb === 'cantmove') {
+                for (var j = 0; j < targets.length; j++) {
+                    var targetName = targets[j];
+                    var targetDat = state.objects[targetName];
+                    var targetLayer = targetDat.layer;
+                    var shiftedDirectionMask = new BitVec(STRIDE_MOV);
+                    shiftedDirectionMask.ishiftor(directionMask, 5 * targetLayer);
+
+                    var o = {
+                        objectMask: objectMask,
+                        directionMask: shiftedDirectionMask,
+                        layer:targetLayer,
+                        seed: seed
+                    };
+
+                    if (verb === 'move') {
+                        bgm_MovementMasks[targetLayer].push(o);
+                    } else {
+                        bgm_MovementFailureMasks.push(o);
+                    }
+                }
+            }
+
+
+
+            var targetArray;
+            switch (verb) {
+                case "create":
+                    {
+                        var o = {
+                            objectMask: objectMask,
+                            seed: seed
+                        }
+                        bgm_CreationMasks.push(o);
+                        break;
+                    }
+                case "destroy":
+                    {
+                        var o = {
+                            objectMask: objectMask,
+                            seed: seed
+                        }
+                        bgm_DestructionMasks.push(o);
+                        break;
+                    }
+            }
+        }
+    }
+
+    state.bgm_Events = bgm_Events;
+    state.bgm_CreationMasks = bgm_CreationMasks;
+    state.bgm_DestructionMasks = bgm_DestructionMasks;
+    state.bgm_MovementMasks = bgm_MovementMasks;
+    state.bgm_MovementFailureMasks = bgm_MovementFailureMasks;
+}
 
 function formatHomePage(state) {
     if ('background_color' in state.metadata) {
@@ -2851,6 +3035,8 @@ function loadFile(str) {
     generateLoopPoints(state);
 
     generateSoundData(state);
+
+    generateMusicData(state);
 
     formatHomePage(state);
 
