@@ -32,7 +32,7 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 `o` Set octave.
 
-`<`, `>` Step up or down one octave. `cdefgab>c`
+`>`, `<` Step up or down one octave. `cdefgab>c`
 
 `t` Tempo(bpm)
 
@@ -50,7 +50,7 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 
 ## Can't do this:
-* Export standalone
+* Export and Share.
 
 * multiple line MML
 
