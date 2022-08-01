@@ -64,9 +64,15 @@ span.cm-SOUND {
 	cursor: hand; 
 	text-decoration: underline;
 }
+span.cm-MUSIC {
+    color: orange;
+	text-decoration: underline;
+}
+
 .cm-s-midnight span.cm-SOUNDVERB {color: #AE81FF;}
 .cm-s-midnight span.cm-SOUNDEVENT {color: #AE81FF;}
-
+.cm-s-midnight span.cm-MUSICVERB {color: #AE81FF;}
+.cm-s-midnight span.cm-MUSICEVENT {color: #AE81FF;}
 .systemMessage {
 	color:white;
 }
