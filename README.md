@@ -1,4 +1,4 @@
-PuzzleScript MML
+# PuzzleScript MML
 
 play music in puzzleScript.
 
@@ -8,7 +8,9 @@ MML https://en.wikipedia.org/wiki/Music_Macro_Language
 
 MMLEmitter https://github.com/mohayonao/mml-emitter (MIT License)
 
-usage
+============
+
+## usage
 
 (1) Add `MUSICS` section
 
@@ -16,9 +18,11 @@ usage
 
 (3) CTRL + click to play a song (Volume Attention!) 
 
-commands:
+============
 
-for example, `t120 v80 l8 o4 cdefg>gfedc` represents `tempo(bpm)=120 volume=80[0-100] note-length=8 octave=4`.
+## commands:
+
+for example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo(bpm)=120 volume=80[0-100] note-length=8 octave=4`.
 
 `;` to make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc.
 
@@ -30,7 +34,7 @@ for example, `t120 v80 l8 o4 cdefg>gfedc` represents `tempo(bpm)=120 volume=80[0
 
 ============
 
-Can't do this:
+## Can't do this
 
 * play music in-game (now only works in-editor.)
 
