@@ -1,10 +1,24 @@
-PuzzleScript
+PuzzleScript MML
+play music in puzzleScript.
+
 ============
+MML https://en.wikipedia.org/wiki/Music_Macro_Language
+MMLEmitter https://github.com/mohayonao/mml-emitter (MIT License)
 
-Open Source HTML5 Puzzle Game Engine
+usage
+(1) Add `MUSICS` section
+(2) `bgm0` - `bgm10` and write MML in `" "`.
+(3) CTRL + click to play a song (Volume Attention!) 
 
-Try it out at https://www.puzzlescript.net.
+commands:
+for example, `t120 v80 l8 o4 cdefg>gfedc` represents `tempo(bpm)=120 volume=80[0-100] note-length=8 octave=4`.
 
------
+`;` to make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc.
+`/: :` repeat one time.
+`[ ]` play multi notes in same time(chord). 
 
-If you're interested in recompiling/modifing/hacking the engine, there is [development setup info here](DEVELOPMENT.md).  If you're just interested in learning how to use the engine/make games in it, [the documentation is here](https://www.puzzlescript.net/Documentation/documentation.html).
+============
+Can't do this:
+* play music in-game (now only works in-editor.)
+* stop music
+* change BGM when you go to the next level
