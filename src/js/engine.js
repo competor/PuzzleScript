@@ -574,30 +574,35 @@ function tryPlayCloseMessageSound(){
 	tryPlaySimpleSound("closemessage");
 }
 
+var audioContext = new AudioContext();
 
 function tryPlaySimpleMusic(musicname) {
 	if (state.bgm_Events[musicname]!==undefined) {
-		console.log("tryPlaySimpleMusic: "+state.bgm_Events[musicname]);
-		var audioContext = new AudioContext();
+		playMusic(state.bgm_Events[musicname]);
+	}
+}
 
-		var seed = state.bgm_Events[musicname];
+function playMusic(mml){
+	if(mml !== undefined){
+		var mml = convertToMML(mml);
 
-		var mml = seed.replace(/[\"]/g,"");
 		let config = { context: audioContext };
-
+	
 		let mmlEmitter = new MMLEmitter(mml, config);
-
+	
 		mmlEmitter.on("note", (e) => {
-		console.log("NOTE: " + JSON.stringify(e));
+		//console.log("NOTE: " + JSON.stringify(e));
 		playNote(e);
 		});
+
 		mmlEmitter.on("end:all", (e) => {
-		console.log("END : " + JSON.stringify(e));
+		//console.log("END : " + JSON.stringify(e));
 		mmlEmitter.stop();
 		});
 	
 		mmlEmitter.start();
 	}
+
 }
 function tryPlayTitleMusic() {
 	tryPlaySimpleMusic("titlescreen");
@@ -676,6 +681,8 @@ function setGameState(_state, command, randomseed) {
     
     sfxCreateMask=new BitVec(STRIDE_OBJ);
     sfxDestroyMask=new BitVec(STRIDE_OBJ);
+    bgmCreateMask=new BitVec(STRIDE_OBJ);
+    bgmDestroyMask=new BitVec(STRIDE_OBJ);
 
 	if (command===undefined) {
 		command=["restart"];
@@ -1196,6 +1203,8 @@ var dirMaskName = {
 
 var seedsToPlay_CanMove=[];
 var seedsToPlay_CantMove=[];
+var mmlsToPlay_CanMove=[];
+var mmlsToPlay_CantMove=[];
 
 function repositionEntitiesOnLayer(positionIndex,layer,dirMask) 
 {
@@ -1230,6 +1239,17 @@ function repositionEntitiesOnLayer(positionIndex,layer,dirMask)
 			var directionMask = o.directionMask;
 			if (movementMask.anyBitsInCommon(directionMask) && seedsToPlay_CanMove.indexOf(o.seed)===-1) {
 				seedsToPlay_CanMove.push(o.seed);
+			}
+		}
+	}
+	for (var i=0;i<state.bgm_MovementMasks[layer].length;i++) {
+		var o = state.bgm_MovementMasks[layer][i];
+		var objectMask = o.objectMask;
+		if (objectMask.anyBitsInCommon(sourceMask)) {
+			var movementMask = level.getMovements(positionIndex);
+			var directionMask = o.directionMask;
+			if (movementMask.anyBitsInCommon(directionMask) && mmlsToPlay_CanMove.indexOf(o.seed)===-1) {
+				mmlsToPlay_CanMove.push(o.seed);
 			}
 		}
 	}
@@ -2591,6 +2611,16 @@ function resolveMovements(level, bannedGroup){
 					}
 				}
 			}
+			for (var j=0;j<state.bgm_MovementFailureMasks.length;j++) {
+				var o = state.bgm_MovementFailureMasks[j];
+				var objectMask = o.objectMask;
+				if (objectMask.anyBitsInCommon(cellMask)) {
+					var directionMask = o.directionMask;
+					if (movementMask.anyBitsInCommon(directionMask) && mmlsToPlay_CantMove.indexOf(o.seed)===-1) {
+						mmlsToPlay_CantMove.push(o.seed);
+					}
+				}
+			}
     	}
 
     	for (var j=0;j<STRIDE_MOV;j++) {
@@ -2723,9 +2753,13 @@ function processInput(dir,dontDoWin,dontModify) {
 		}
 	    sfxCreateMask.setZero();
 	    sfxDestroyMask.setZero();
+	    bgmCreateMask.setZero();
+	    bgmDestroyMask.setZero();
 
 		seedsToPlay_CanMove=[];
 		seedsToPlay_CantMove=[];
+		mmlsToPlay_CanMove=[];
+		mmlsToPlay_CantMove=[];
 
 		calculateRowColMasks();
 
@@ -2913,14 +2947,20 @@ function processInput(dir,dontDoWin,dontModify) {
 			return false;
 		}
 
-        for (var i=0;i<seedsToPlay_CantMove.length;i++) {			
-	        	playSound(seedsToPlay_CantMove[i]); // competor
-				
+        for (var i=0;i<seedsToPlay_CantMove.length;i++) {
+	        	playSound(seedsToPlay_CantMove[i]); 
+
         }
+		for (var i=0;i<mmlsToPlay_CantMove.length;i++) {
+				playMusic(mmlsToPlay_CantMove[i]); 	
+		}
 
         for (var i=0;i<seedsToPlay_CanMove.length;i++) {
 	        	playSound(seedsToPlay_CanMove[i]);
         }
+        for (var i=0;i<mmlsToPlay_CanMove.length;i++) {
+				playMusic(mmlsToPlay_CantMove[i]); 
+		}
 
         for (var i=0;i<state.sfx_CreationMasks.length;i++) {
         	var entry = state.sfx_CreationMasks[i];
@@ -2928,11 +2968,23 @@ function processInput(dir,dontDoWin,dontModify) {
 	        	playSound(entry.seed);
         	}
         }
+        for (var i=0;i<state.bgm_CreationMasks.length;i++) {
+        	var entry = state.bgm_CreationMasks[i];
+			if (bgmCreateMask.anyBitsInCommon(entry.objectMask)) {
+	        	playMusic(entry.seed); //seed?
+        	}
+        }
 
         for (var i=0;i<state.sfx_DestructionMasks.length;i++) {
         	var entry = state.sfx_DestructionMasks[i];
         	if (sfxDestroyMask.anyBitsInCommon(entry.objectMask)) {
 	        	playSound(entry.seed);
+        	}
+        }
+        for (var i=0;i<state.bgm_DestructionMasks.length;i++) {
+        	var entry = state.bgm_DestructionMasks[i];
+        	if (bgmDestroyMask.anyBitsInCommon(entry.objectMask)) {
+	        	playMusic(entry.seed); //seed?
         	}
         }
 

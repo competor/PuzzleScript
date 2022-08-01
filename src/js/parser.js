@@ -234,7 +234,7 @@ var codeMirrorFn = function() {
     const absolutedirs = ['up', 'down', 'right', 'left'];
     const relativedirs = ['^', 'v', '<', '>', 'moving','stationary','parallel','perpendicular', 'no'];
     const logicWords = ['all', 'no', 'on', 'some'];
-    const sectionNames = ['objects', 'legend', 'sounds', 'musics' , 'collisionlayers', 'rules', 'winconditions', 'levels'];
+    const sectionNames = ['objects', 'legend', 'sounds', 'musics', 'collisionlayers', 'rules', 'winconditions', 'levels'];
 	const commandwords = ["sfx0","sfx1","sfx2","sfx3","sfx4","sfx5","sfx6","sfx7","sfx8","sfx9","sfx10","bgm0","bgm1","bgm2","bgm3","bgm4","bgm5","bgm6","bgm7","bgm8","bgm9","bgm10","cancel","checkpoint","restart","win","message","again"];
     const reg_commands = /[\p{Z}\s]*(sfx0|sfx1|sfx2|sfx3|Sfx4|sfx5|sfx6|sfx7|sfx8|sfx9|sfx10|bgm0|bgm1|bgm2|bgm3|Sfx4|bgm5|bgm6|bgm7|bgm8|bgm9|bgm10|cancel|checkpoint|restart|win|message|again)[\p{Z}\s]*/u;
     const reg_name = /[\p{L}\p{N}_]+[\p{Z}\s]*/u;///\w*[a-uw-zA-UW-Z0-9_]/;
@@ -461,18 +461,19 @@ var codeMirrorFn = function() {
 
     }
     function processMusicsLine(state){
-        // if (state.current_line_wip_array.length===0){
-        //     return;
-        // }
-        // //if last entry in array is 'ERROR', do nothing
-        // if (state.current_line_wip_array[state.current_line_wip_array.length-1]==='ERROR'){
+        if (state.current_line_wip_array.length===0){
+            return;
+        }
+        //if last entry in array is 'ERROR', do nothing
+        if (state.current_line_wip_array[state.current_line_wip_array.length-1]==='ERROR'){
 
-        // } else {
-        //     //take the first component from each pair in the array
-        //     var musicrow = state.current_line_wip_array;//.map(function(a){return a[0];});
-        //     musicrow.push(state.lineNumber);
-        //     state.musics.push(musicrow);
-        // }
+        } else {
+            //take the first component from each pair in the array
+            var musicrow = state.current_line_wip_array;//.map(function(a){return a[0];});
+            musicrow.push(state.lineNumber);
+            state.musics.push(musicrow);
+
+        }
 
     }
 
@@ -521,6 +522,7 @@ var codeMirrorFn = function() {
             var legend_aggregatesCopy = [];
             var legend_propertiesCopy = [];
             var soundsCopy = [];
+            var musicsCopy = [];
             var levelsCopy = [];
             var winConditionsCopy = [];
             var rulesCopy = [];
@@ -537,6 +539,9 @@ var codeMirrorFn = function() {
             for (var i = 0; i < state.sounds.length; i++) {
               soundsCopy.push(state.sounds[i].concat([]));
             }
+            for (var i = 0; i < state.musics.length; i++) {
+              musicsCopy.push(state.musics[i].concat([]));
+              }
             for (var i = 0; i < state.levels.length; i++) {
               levelsCopy.push(state.levels[i].concat([]));
             }
@@ -577,6 +582,7 @@ var codeMirrorFn = function() {
               legend_properties: legend_propertiesCopy,
 
               sounds: soundsCopy,
+              musics: musicsCopy,
 
               rules: rulesCopy,
 
@@ -732,6 +738,45 @@ var codeMirrorFn = function() {
                 }
 
                 if (state.section === 'sounds') {
+                    //populate names from rules
+                    for (var n in state.objects) {
+                        if (state.objects.hasOwnProperty(n)) {
+/*                                if (state.names.indexOf(n)!==-1) {
+                                logError('Object "'+n+'" has been declared to be multiple different things',state.objects[n].lineNumber);
+                            }*/
+                            state.names.push(n);
+                        }
+                    }
+                    //populate names from legends
+                    for (var i = 0; i < state.legend_synonyms.length; i++) {
+                        var n = state.legend_synonyms[i][0];
+                        /*
+                        if (state.names.indexOf(n)!==-1) {
+                            logError('Object "'+n+'" has been declared to be multiple different things',state.legend_synonyms[i].lineNumber);
+                        }
+                        */
+                        state.names.push(n);
+                    }
+                    for (var i = 0; i < state.legend_aggregates.length; i++) {
+                        var n = state.legend_aggregates[i][0];
+                        /*
+                        if (state.names.indexOf(n)!==-1) {
+                            logError('Object "'+n+'" has been declared to be multiple different things',state.legend_aggregates[i].lineNumber);
+                        }
+                        */
+                        state.names.push(n);
+                    }
+                    for (var i = 0; i < state.legend_properties.length; i++) {
+                        var n = state.legend_properties[i][0];
+                        /*
+                        if (state.names.indexOf(n)!==-1) {
+                            logError('Object "'+n+'" has been declared to be multiple different things',state.legend_properties[i].lineNumber);
+                        }                           
+                        */ 
+                        state.names.push(n);
+                    }
+                }
+                if (state.section === 'musics') {
                     //populate names from rules
                     for (var n in state.objects) {
                         if (state.objects.hasOwnProperty(n)) {
@@ -1272,7 +1317,7 @@ var codeMirrorFn = function() {
                             var match = stream.match(reg_mml, true);
                             if (match !== null)
                             {
-                                tokentype = 'MUSIC'; // competor ?
+                                tokentype = 'MUSIC';
                             }
                         }
 

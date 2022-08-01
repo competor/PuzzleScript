@@ -114,11 +114,11 @@ editor.on('mousedown', function(cm, event) {
 		let mmlEmitter = new MMLEmitter(mml, config);
 
 		mmlEmitter.on("note", (e) => {
-		console.log("NOTE: " + JSON.stringify(e));
+		//console.log("NOTE: " + JSON.stringify(e));
 		playNote(e);
 		});
 		mmlEmitter.on("end:all", (e) => {
-		console.log("END : " + JSON.stringify(e));
+		//console.log("END : " + JSON.stringify(e));
 		mmlEmitter.stop();
 		});
 	
@@ -129,9 +129,8 @@ editor.on('mousedown', function(cm, event) {
 });
 
 function convertToMML(text){
-	console.log(text);
 	text = text.replace(/[\"]/g,"").replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&nbsp;/g,"");
-	console.log(text);
+
 	return text;
 }
 

@@ -8,49 +8,55 @@ MMLEmitter https://github.com/mohayonao/mml-emitter (MIT License)
 
 ## usage:
 
-(1) Add `MUSICS` section
+(1) Add `MUSICS` section.
 
-(2) Select `bgm0` - `bgm10` and write MML in `" "`.
+(2) Select `bgm0` - `bgm10` and write MML in `" "` in 1-line.
 
-(3) CTRL + Click to play a song (Volume Attention!) 
+(3) CTRL + Click to play a song. [Volume Attention!]
 
 ## commands:
 
-for example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo(bpm)=120 volume=80 note-length=8 octave=4`.
+For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80 note-length=8 octave=4` and plays following notes: `cdefg>gfedc`.
 
-`c+8` represents a C# eighth note, `cdefgab` with `+`(sharp), `-`(flat).
+`c` Note. `c c+ d d+ e f f+ g g+ a a+ b `
 
-`r` or `r8` rest note.
+`+`(sharp), `-`(flat). `c+8` represents a C# eighth note.
 
-`o` set octave.
+`c4 e8 g16 b3` The number following the note means the length of the note. 
 
-`<`, `>` step up or down one octave. 
+`c4.` Dotted quarter note.
 
-`t` tempo(bpm)
+`l` Set note length. `l4 cde` means `c4 d4 e4` .
 
-`v` velocity(volume) [0 - 100]
+`r` Rest note. `r4` is a quarter rest.
 
-`l` note length
+`o` Set octave.
 
-`q` quantize
+`<`, `>` Step up or down one octave. `cdefgab>c`
 
-`;` make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc.
+`t` Tempo(bpm)
 
-`/: cder :/ gedcdedr` repeat one time.
+`v` Velocity(volume) [0 - 100]
 
-`[ ]` play multi notes in same time (chord). 
+`q` Quantize(gate time) try this:`l4 q100 cdef q50 cdef q10 cdef q200 cdef`
 
-`$` inifinite loop the song.
+`;` Make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc.
+
+`/: cder :/ gedcdedr` Repeat one time.
+
+`[ ]` Play multi notes in same time (chord). `v50q40 /: g4 l2 [ b>df+ ] d4 l2 [a>c+f+] :/`
+
+`$` Inifinite loop the song. There is no way to stop it, so use it only if you want it to play as one piece of background music forever.
 
 
 ## Can't do this:
 
-* play music in-game (now only works in-editor lol.)
+* multiple line MML
 
-* stop music
+* stop the playing music (why???)
 
-* change BGM when you go to the next level
+* also, change the BGM. for wxample, if you go to the next level.
 
-* change the tone
+* change the tone.
 
 * no error message is shown in editor console if your MML is wrong. watch browser's console log.
