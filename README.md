@@ -6,11 +6,11 @@ MML https://en.wikipedia.org/wiki/Music_Macro_Language
 
 MMLEmitter https://github.com/mohayonao/mml-emitter (MIT License)
 
-## usage:
+## how to use:
 
 (1) Add `MUSICS` section.
 
-(2) Select `bgm0` - `bgm10` and write MML in `" "` in 1-line.
+(2) Select `bgm0` - `bgm10` and write MML in `" "` in 1-line. Also you can use same keywords as SOUNDS.
 
 (3) CTRL + Click to play a song. [Volume Attention!]
 
@@ -50,6 +50,7 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 
 ## Can't do this:
+* Export standalone
 
 * multiple line MML
 
