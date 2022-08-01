@@ -52,3 +52,5 @@ for example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo(bpm)=120 volu
 * change BGM when you go to the next level
 
 * change the tone
+
+* no error message is shown in editor console if your MML is wrong. watch browser's console log.
