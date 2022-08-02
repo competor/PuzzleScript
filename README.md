@@ -34,25 +34,29 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 **Note event**
 
-`cdefgab` Note. `c4 e8 g16 b3` The number following the note means the length of the note. `c4.` Dotted quarter note.
+`cdefgab` Note. 
 
-`+`(sharp), `-`(flat). `c+8` represents a C# eighth note.
+* `c4 e8 g16 b3` The number following the note means the length of the note.
 
-`r` Rest note. `r4` is a quarter rest.
+* `c4.` Dotted quarter note.
+
+* `+` Sharp, `-` Flat. `c+8` represents a C# eighth note.
+
+`r` Rest note. `r2.` is a dotted half rest.
 
 **Note Length**
 
-`l` Set note length. `l4 cde` means `c4 d4 e4` .
+`l` Set the following notes length. [default 4] `l4 cde` means `c4 d4 e4` .
 
 `^` Tie.
 
-`q` Quantize(gate time) try this: `l4 q100 cdef q50 cdef q10 cdef q200 cdef`
+`q` Quantize(gate time) [default 75] Try this: `l4 q100 cdef q50 cdef q10 cdef q200 cdef`
 
 **Note Pitch**
 
 `o` Set octave. [default: 4]
 
-`>`, `<` Step up or down one octave. `cdefgab>c`
+`>`, `<` Step up or down one octave relatively. `cdefgab>c`
 
 **Control**
 
@@ -71,7 +75,7 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 `$` Inifinite loop.
 
-`;` Make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc.
+`;` Make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc. again.
 
 ## can't do this:
 * Export and Share.
