@@ -32,7 +32,7 @@ Use as SFX!
 
 For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80 note-length=8 octave=4` and plays following notes: `cdefg>gfedc`.
 
-Note event
+**Note event**
 
 `cdefgab` Note. `c4 e8 g16 b3` The number following the note means the length of the note. `c4.` Dotted quarter note.
 
@@ -40,7 +40,7 @@ Note event
 
 `r` Rest note. `r4` is a quarter rest.
 
-Note Length
+**Note Length**
 
 `l` Set note length. `l4 cde` means `c4 d4 e4` .
 
@@ -48,13 +48,13 @@ Note Length
 
 `q` Quantize(gate time) try this: `l4 q100 cdef q50 cdef q10 cdef q200 cdef`
 
-Note Pitch
+**Note Pitch**
 
 `o` Set octave. [default: 4]
 
 `>`, `<` Step up or down one octave. `cdefgab>c`
 
-Control
+**Control**
 
 `t` Tempo(bpm) [default: 120]
 
