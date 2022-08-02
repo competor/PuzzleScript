@@ -86,6 +86,10 @@ Control
 
 * no error message is shown in editor console if your MML is wrong. watch browser's console log. (Search "SyntaxError: Unexpected token: xx")
 
+## known bugs
+
+* `Player Move "cde"` doesn't work.
+
 ## See Also
 
 MMLIterator https://github.com/mohayonao/mml-iterator / MML(Music Macro Language) Iterator
