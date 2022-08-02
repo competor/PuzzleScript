@@ -80,7 +80,7 @@ Control
 
 * ~~stop the playing music (why???)~~
 
-* also, change the BGM. for example, if you go to the next level.
+* ~~also, change the BGM. for example, if you go to the next level.~~ If you want to change the bgm, don't use `Startlevel`. Instead, This would be nice to be coded with `run_rules_on_level_start`, when some init-object is there, play BGMnn` in the first turn.
 
 * change the tone.
 
