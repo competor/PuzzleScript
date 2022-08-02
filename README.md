@@ -16,6 +16,8 @@ MMLEmitter https://github.com/mohayonao/mml-emitter (MIT License)
 
 (3) CTRL + Click to play a song. [Volume Attention!]
 
+(4) Click `STOP MML` in the Topbar. All music stops even in-game music.
+
 
 ## sample:
 W.A.Mozart - Turkish March / from http://mohayonao.github.io/mml-emitter/
