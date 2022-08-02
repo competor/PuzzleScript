@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>MML Editor</title>
+  <style type="text/css">
+    body {
+      background: #ecf0f1;
+    }
+
+    h3{
+      margin-left: 16px;
+    }
+    p{
+      margin-left: 32px;
+    }
+    a{
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    #editor {
+      width: 50%;
+      height: 350px;
+
+      font-family: monospace;
+      font-size: 16px;
+    }
+
+    #commands {
+      margin: 6px;
+      padding: 10px;
+      width: 40%;
+      background: white;
+      font-size: 14px;
+    }
+
+    #console_log {
+      color: red;
+    }
+
+    .sample{
+      background: linear-gradient(transparent 70%, #c1e0ff 70%);
+      font-weight: bold; 
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 id="title">MML Editor</h1>
+    <div><textarea id="editor">
+t120 q50 v50
+/: o4 l16 bag+a&gt;
+    c8r8dc&lt;b&gt;c e8r8fed+e bag+abag+a &gt;c4&lt;a8&gt;c8&lt;
+    l8 [gb][f+a][eg][f+a] [gb][f+a][eg][f+a] [gb][f+a][eg][d+f+] e4 :/
+/: o5 [ce][df] [eg][eg]a16g16f16e16 [&lt;b&gt;d]4[ce][df] [eg][eg]a16g16f16e16 [&lt;b&gt;d]4[&lt;a&gt;c][&lt;b&gt;d]
+    [ce][ce] f16e16d16c16 &lt;[g+b]4[a&gt;c][b&gt;d] &gt;[ce][ce]f16e16d16c16 &lt;[g+b]4
+    l16 bag+a &gt;c8r8dc&lt;b&gt;c e8r8fed+e bag+abag+a l8&gt;c4&lt;ab &gt;c&lt;bag+ aefd c4&lt;b8.a32b32 a4 :/
+;
+t120 q50 v40
+/: o3 l8 r4
+    a&gt;[ce][ce][ce]&lt; a&gt;[ce][ce][ce]&lt; a&gt;[ce]&lt;a&gt;[ce]&lt; a&gt;[ce][ce][ce]&lt;
+    e[b&gt;e][b&gt;e][b&gt;e] e[b&gt;e][b&gt;e][b&gt;e] e[b&gt;e]&lt;b&gt;b e4 :/
+/: o3 r4 c&gt;c&lt;e&gt;e&lt;g&gt;g&lt;r4 c&gt;c&lt;e&gt;e&lt;g4r4 &lt;a&gt;ac&gt;c&lt;e&gt;e&lt;r4 &lt;a&gt;ac&gt;c&lt;e4r4
+    a&gt;[ce][ce][ce]&lt; a&gt;[ce][ce][ce]&lt; a&gt;[ce]&lt;a&gt;[ce]&lt; f[a&gt;d+][a&gt;d+][a&gt;d+]
+    e[ae]d[fb] c[ea]d[fb] [ea][ea][eg+][eg+] [&lt;a&gt;a]4 :/
+;
+    </textarea></div>
+    <div>
+      <input type="button" value="Play" onclick="playMusic()" />
+      <input type="button" value="Stop" onclick="stopMusic()" />
+      <input type="button" value="Convert to 1-line (Copy to Clipboard)" onclick="copyText()" />
+    </div>
+    <div id="console_log"></div>
+    <div id="commands">
+      <div><a href="https://github.com/mohayonao/mml-iterator#mml-syntax">MML Syntax</a></div>
+      <h2>NoteEvent</h2>
+      <h3>[cdefgab][-+]?(\d+)?\.*</h3>
+      <p>note on (default: l) <span class="sample">e.g. c e-8. g16</span></p>
+      <h3>[ ([cdefgab][-+]?|[&lt;&gt;])+ ](\d+)?\.*</h3>
+      <p>chord (default: l) <span class="sample">e.g. [ &gt;g&lt;ce ]2 [ &gt;gb&lt;d ]2 [ &gt;g&lt;ce ]1</span></p>
+      <h3>r(\d+)?\.*</h3>
+      <p>rest (default: l) <span class="sample">e.g. l16 crcc crcc crccr crcc</span></p>
+      <h2>NoteLength</h2>
+      <h3>l(\d+)?\.*</h3>
+      <p>length (default: 4) <span class="sample">e.g. l8 cc l4 e l2 g</span></p>
+      <h3>^(\d+)?\.*</h3>
+      <p>tie (default: l) <span class="sample">e.g l16 c^^ e^^ g^</span></p>
+      <h3>q(\d+)?</h3>
+      <p>quantize (default: 75) <span class="sample">e.g. l16 q50 crcc crcc crcc crcc</span></p>
+      <h2>NotePitch</h2>
+      <h3>o(\d+)?</h3>
+      <p>octave (default: 4) <span class="sample">e.g. o4 ceg o5 c</span></p>
+      <h3>&gt;(\d+)?</h3>
+      <p>octave up (default: 1) <span class="sample">e.g. ceg &lt; c</span></p>
+      <h3>&lt;(\d+)?</h3>
+      <p>octave down (default: 1) <span class="sample">e.g. c &gt; gec</span></p>
+      <h2>Control</h2>
+      <h3>t(\d+)?</h3>
+      <p>tempo (default: 120) <span class="sample">e.g. t140 cdefgab&lt;c</span></p>
+      <h3>v(\d+)?</h3>
+      <p>velocity (default: 100) <span class="sample">e.g. v75 c v50 e v25 g</span></p>
+      <h3>$</h3>
+      <p>infinite loop <span class="sample">e.g. l2 $ [fa&lt;ce] [gb&lt;d] [egb&lt;d] [ea&lt;c]</span></p>
+      <h3>/: ... | ... :/(\d+)?</h3>
+      <p>loop (default: 2)</p>
+      <p>commands after | are skipped in the last loop <span class="sample">e.g. l2 /: [fa&lt;ce] [gb&lt;d] [egb&lt;d] | [ea&lt;c] :/4 [eg&lt;c]</span></p>
+      <h3>;</h3>
+      <p>multi track <span class="sample">e.g. l4o4cde;l6o5cdefgab</span></p>
+    </div>
+
+    <script>
+      console.log = function (log) {
+        document.getElementById('console_log').innerHTML = log + "<br>";
+      }
+    </script>
+    <script>
+      var audioContext = new AudioContext();
+      var mmlEmitter = null;
+
+      function stopMusic() {
+        if (mmlEmitter) {
+          mmlEmitter.stop();
+        }
+      }
+
+      function playMusic() {
+        stopMusic();
+
+        var mml = convertToMML(document.getElementById("editor").value);
+
+        let config = { context: audioContext };
+
+        mmlEmitter = new MMLEmitter(mml, config);
+
+        mmlEmitter.on("note", (e) => {
+          //console.log("NOTE: " + JSON.stringify(e));
+          playNote(e);
+
+        });
+
+        mmlEmitter.on("end:all", (e) => {
+          //console.log("END : " + JSON.stringify(e));
+          mmlEmitter.stop();
+        });
+
+        mmlEmitter.start();
+
+
+      }
+
+
+      function convertToMML(text) {
+        text = text.replace(/[\"]/g, "").replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&nbsp;/g, "");
+        return text;
+      }
+
+      function copyText() {
+        text = convertToMML(document.getElementById("editor").value);
+        text = text.replace(/\r?\n/g, '').replace(/\/\//g, "/ /");
+        text = "\"" + text + "\"";
+
+        navigator.clipboard.writeText(text)
+          .then(() => {
+            console.log("Copied! ");
+          })
+          .catch(err => {
+            console.log('Something went wrong', err);
+          })
+      }
+    </script>
+    <script src="js/mml-emitter.js"></script>
+    <script src="js/mml-sound.js"></script>
+</body>
+
+</html>

@@ -26,6 +26,9 @@ levelEditorClickLink.addEventListener("click", levelEditorClick_Fn, false);
 var exportClickLink = document.getElementById("exportClickLink");
 exportClickLink.addEventListener("click", exportClick, false);
 
+var stopMMLClickLink = document.getElementById("stopMMLClickLink");
+stopMMLClickLink.addEventListener("click", stopMusic, false);
+
 var exampleDropdown = document.getElementById("exampleDropdown");
 exampleDropdown.addEventListener("change", dropdownChange, false);
 
@@ -37,6 +40,7 @@ horizontalDragbar.addEventListener("mousedown", horizontalDragbarMouseDown, fals
 
 var verticalDragbar = document.getElementById("verticaldragbar");
 verticalDragbar.addEventListener("mousedown", verticalDragbarMouseDown, false);
+
 
 window.addEventListener("resize", resize_all, false);
 window.addEventListener("load", reset_panels, false);

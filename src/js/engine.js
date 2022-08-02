@@ -574,7 +574,10 @@ function tryPlayCloseMessageSound(){
 	tryPlaySimpleSound("closemessage");
 }
 
+
 var audioContext = new AudioContext();
+var mmlEmitter = null;
+var mmlList = [];
 
 function tryPlaySimpleMusic(musicname) {
 	if (state.bgm_Events[musicname]!==undefined) {
@@ -582,14 +585,28 @@ function tryPlaySimpleMusic(musicname) {
 	}
 }
 
+function stopMusic(){ //stop All!
+	//in-game MML
+	mmlList.forEach(function(mmlEmitter){
+		if(MMLEmitter.state !== "closed"){
+			mmlEmitter.stop();
+		}
+	});
+	mmlList = [];
+
+	//editor MML
+	if (mmlEmitter) {
+		mmlEmitter.stop();
+	  }
+}
+
 function playMusic(mml){
 	if(mml !== undefined){
 		var mml = convertToMML(mml);
-
 		let config = { context: audioContext };
-	
-		let mmlEmitter = new MMLEmitter(mml, config);
-	
+		mmlEmitter = new MMLEmitter(mml, config);
+		mmlList.push(mmlEmitter);
+
 		mmlEmitter.on("note", (e) => {
 		//console.log("NOTE: " + JSON.stringify(e));
 		playNote(e);
@@ -605,14 +622,17 @@ function playMusic(mml){
 
 }
 function tryPlayTitleMusic() {
+	stopMusic();
 	tryPlaySimpleMusic("titlescreen");
 }
 
 function tryPlayStartGameMusic() {
+	stopMusic();
 	tryPlaySimpleMusic("startgame");
 }
 
 function tryPlayEndGameMusic() {
+	stopMusic();
 	tryPlaySimpleMusic("endgame");
 }
 
@@ -621,6 +641,7 @@ function tryPlayCancelMusic() {
 }
 
 function tryPlayStartLevelMusic() {
+	stopMusic();
 	tryPlaySimpleMusic("startlevel");
 }
 
@@ -633,6 +654,8 @@ function tryPlayUndoMusic(){
 }
 
 function tryPlayRestartMusic(){
+	stopMusic();
+	tryPlaySimpleMusic("startlevel");
 	tryPlaySimpleMusic("restart");
 }
 

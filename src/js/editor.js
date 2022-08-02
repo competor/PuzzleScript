@@ -90,10 +90,12 @@ var editor = window.CodeMirror.fromTextArea(code, {
 		"Esc":CodeMirror.commands.clearSearch,
 		"Shift-Ctrl-Up": "swapLineUp",
 		"Shift-Ctrl-Down": "swapLineDown",
-		}
-	});
-	
-var audioContext = new AudioContext();
+	}
+});
+
+
+// var audioContext = new AudioContext();
+// var mmlEmitter = null;
 
 editor.on('mousedown', function(cm, event) {
   if (event.target.className == 'cm-SOUND') {
@@ -108,10 +110,13 @@ editor.on('mousedown', function(cm, event) {
     }
   } else if (event.target.className == 'cm-MUSIC') {
 	if (event.ctrlKey||event.metaKey) {
+		if (mmlEmitter) {
+            mmlEmitter.stop();
+          }
 		var mml = convertToMML(event.target.innerHTML);
 		let config = { context: audioContext };
 
-		let mmlEmitter = new MMLEmitter(mml, config);
+		mmlEmitter = new MMLEmitter(mml, config);
 
 		mmlEmitter.on("note", (e) => {
 		//console.log("NOTE: " + JSON.stringify(e));
