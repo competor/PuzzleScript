@@ -46,7 +46,7 @@ Note Length
 
 `^` Tie.
 
-`q` Quantize(gate time) try this:`l4 q100 cdef q50 cdef q10 cdef q200 cdef`
+`q` Quantize(gate time) try this: `l4 q100 cdef q50 cdef q10 cdef q200 cdef`
 
 Note Pitch
 
@@ -62,12 +62,12 @@ Control
 
 `[ ]` Play multi notes in same time (chord). `v50q40 /: g4 l2 [ b>df+ ] d4 l2 [a>c+f+] :/`
 
-`/: | :/` Loop(default 2). 
+`/: | :/` Loop. [default 2] 
 
 * `l8 /: cd :/4 e` Repeat 4 time. 
 
-* Also you can nest them: `/: c /: d /: e :/ f :/ g :/` Do not repeat the slash like `://:`. Please insert a space: `:/ /:`. 
-* Commands after `|` are skipped in the last loop. `/: cde | f :/3 dc`
+* Also you can nest them: `/: c /: d /: e :/ f :/ g :/` But don't repeat the slashes like `://:` . Please insert a space: `:/ /:` .
+* Commands after `|` are skipped in the last loop. `/: cde | f :/3 dc` is played as `cdef cdef cdedc` .
 
 `$` Inifinite loop.
 
