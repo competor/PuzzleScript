@@ -20,11 +20,12 @@ MMLEmitter https://github.com/mohayonao/mml-emitter (MIT License)
 
 
 ## Sample:
-W.A.Mozart - Turkish March / from http://mohayonao.github.io/mml-emitter/
+
+W.A.Mozart - Turkish March (from http://mohayonao.github.io/mml-emitter/ )
 
 `bgm0 "$t140q5v50 /:o4l16bag+a>c8r8dc<b>ce8r8fed+ebag+abag+a>c4<a8>c8<l8[gb][f+a][eg][f+a][gb][f+a][eg][f+a][gb][f+a][eg][d+f+]e4:/ /:o5[ce][df][eg][eg]a16g16f16e16[<b>d]4[ce][df][eg][eg]a16g16f16e16[<b>d]4[<a>c][<b>d][ce][ce]f16e16d16c16<[g+b]4[a>c][b>d]>[ce][ce]f16e16d16c16<[g+b]4l16bag+a>c8r8dc<b>ce8r8fed+ebag+abag+al8>c4<ab>c<bag+aefdc4<b8.a32b32a4 :/ ;$t140q50v30/:o3l8r4a>[ce][ce][ce]<a>[ce][ce][ce]<a>[ce]<a>[ce]<a>[ce][ce][ce]<e[b>e][b>e][b>e]e[b>e][b>e][b>e]e[b>e]<b>be4:/ /:o3r4c>c<e>e<g>g<r4c>c<e>e<g4r4<a>ac>c<e>e<r4<a>ac>c<e4r4a>[ce][ce][ce]<a>[ce][ce][ce]<a>[ce]<a>[ce]<f[a>d+][a>d+][a>d+]e[ae]d[fb]c[ea]d[fb][ea][ea][eg+][eg+][<a>a]4:/;"`
 
-Use as SFX!
+Use as a SFX!
 
 `endlevel "t200l16q1o7 c>c>c"`
 
@@ -82,23 +83,24 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 `;` Make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc. again.
 
 ## Can't do this
-* Export and Share.
 
-* Keep the BGM playing when the level changes.
+* SHARE link
+
+* Keep BGM playing when the level changes.
+
+* Stop BGM with a code, sorry!
 
 * ~~multiple line MML~~ Use [MML Editor](https://competor.github.io/PuzzleScript-MML/src/mmleditor.html) instead!
 
-* ~~stop the playing music (why???)~~
-
 * ~~change the BGM. for example, if you go to the next level.~~ If you want to change the bgm by levels, don't use `Startlevel`. Instead, This would be nice to be coded with `run_rules_on_level_start`, when some init-object is there, play `BGMnn` in the first turn.
 
-* ~~change the tone.~~
-
-* ADSR envelope control
+* ADSR envelope control. Do you really need this?
 
 * no error message is shown in editor console if your MML is wrong. watch browser's console log. (Search "SyntaxError: Unexpected token: xx")
 
 ## Known bugs
+
+* When you click EXPORT to make html, `titlescreen` BGM doesn't be played, because of ["Autoplay policy"](https://developer.chrome.com/blog/autoplay/) of your browser (You need to interact (click, tap, etc.) to allow the audio.) But when you upload this html file for itch.io or somewhere, and if you "click to start" the game, it will work correctly.
 
 ## See Also
 
