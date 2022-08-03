@@ -997,7 +997,8 @@ exports["default"] = {
   length: 4,
   velocity: 100,
   quantize: 75,
-  loopCount: 2
+  loopCount: 2,
+  wave: 1
 };
 module.exports = exports["default"];
 },{}],19:[function(require,module,exports){
@@ -1042,6 +1043,7 @@ var MMLIterator = (function () {
     this._velocity = _DefaultParams2["default"].velocity;
     this._quantize = _DefaultParams2["default"].quantize;
     this._tempo = _DefaultParams2["default"].tempo;
+    this._wave = _DefaultParams2["default"].wave;
     this._infiniteLoopIndex = -1;
     this._loopStack = [];
     this._done = false;
@@ -1152,11 +1154,12 @@ var MMLIterator = (function () {
       });
       var quantize = this._quantize;
       var velocity = this._velocity;
+      var wave     = this._wave; 
 
       this._processedTime = this._processedTime + duration;
 
       return arrayToIterator(noteNumbers.map(function (noteNumber) {
-        return { type: type, time: time, duration: duration, noteNumber: noteNumber, velocity: velocity, quantize: quantize };
+        return { type: type, time: time, duration: duration, noteNumber: noteNumber, velocity: velocity, quantize: quantize, wave: wave };
       }));
     }
   }, {
@@ -1201,6 +1204,11 @@ var MMLIterator = (function () {
     key: _Syntax2["default"].Tempo,
     value: function value(command) {
       this._tempo = command.value !== null ? command.value : _DefaultParams2["default"].tempo;
+    }
+  }, {
+    key: _Syntax2["default"].Wave,
+    value: function value(command) {
+      this._wave = command.value !== null ? command.value : _DefaultParams2["default"].wave;
     }
   }, {
     key: _Syntax2["default"].InfiniteLoop,
@@ -1344,6 +1352,8 @@ var MMLParser = (function () {
           return this.readNoteVelocity();
         case "t":
           return this.readTempo();
+        case "@":
+          return this.readWave();
         case "$":
           return this.readInfiniteLoop();
         case "/":
@@ -1473,6 +1483,16 @@ var MMLParser = (function () {
       return {
         type: _Syntax2["default"].Tempo,
         value: this._readArgument(/\d+(\.\d+)?/)
+      };
+    }
+  }, {
+    key: "readWave",
+    value: function readWave() {
+      this.scanner.expect("@");
+
+      return {
+        type: _Syntax2["default"].Wave,
+        value: this._readArgument(/[1234]/)
       };
     }
   }, {
@@ -1723,6 +1743,7 @@ exports["default"] = {
   NoteVelocity: "NoteVelocity",
   NoteQuantize: "NoteQuantize",
   Tempo: "Tempo",
+  Wave: "Wave",
   InfiniteLoop: "InfiniteLoop",
   LoopBegin: "LoopBegin",
   LoopExit: "LoopExit",
