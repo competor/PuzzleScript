@@ -85,7 +85,7 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 ## SHARE link
 
-* Now you can share your puzzle! [(Example)](https://competor.github.io/PuzzleScript-MML/src/play.html?p=debc0ce29ebc86df47d2fac5c5497999)
+* Now you can share your puzzle!
 
     * Upload your script for [Github Gist](https://gist.github.com/)
 
