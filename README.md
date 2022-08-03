@@ -8,16 +8,17 @@ MMLEmitter https://github.com/mohayonao/mml-emitter (MIT License)
 
 ## How to use:
 
-(1) Add `MUSICS` section.
+(1) Add `MUSICS` section after `SOUNDS` section.
 
-(2) Select `bgm0` - `bgm10` and write MML in `" "` in 1-line. Also you can use same keywords as SOUNDS.
+(2) Select `bgm0` - `bgm10` and write MML in `" "` in 1-line. 
 
-* Use [MML Editor](https://competor.github.io/PuzzleScript-MML/src/mmleditor.html) in the Topbar in the Editor if you want
+* Also you can use same keywords as SOUNDS. For example: `startlevel "t120v40q1o3l8@1 $[cgb][f>ce][eb>d][<b>f>ce];t120v30q100o5l4@4 $g^rde^rc<b^r>c8d8<g^^r a^r>cd^rc<g^ra8>c8e^^r"`
 
-(3) CTRL + Click to play a song. [Volume Attention!]
+* Use [MML Editor](https://competor.github.io/PuzzleScript-MML/src/mmleditor.html) at the top-bar of the editor if you want.
 
-(4) Click `STOP MML` in the Topbar. All music stops even in-game music.
+(3) CTRL + Click the underlined MML text to play a song. [Volume Attention!]
 
+(4) To stop MML, Click `STOP MML` in the top-bar. All music stops even in-game BGM.
 
 ## Sample:
 
