@@ -83,9 +83,22 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 `;` Make multi-tracks. Every track is separated, so you have to set the tempo,volume, etc. again.
 
-## Can't do this
+## SHARE link
 
-* SHARE link
+* Now you can https://competor.github.io/PuzzleScript-MML/src/play.html?p=debc0ce29ebc86df47d2fac5c5497999
+
+    * Upload your script for [Github Gist](https://gist.github.com/)
+
+    * Modify filename to **script.txt** and create secret/public gist.
+
+    * Copy the ID at the end of the gist: https://gist.github.com/yourname/**debc0ce29ebc86df47d2fac5c5497999**
+
+    * Paste the ID at the end of this URL: https://competor.github.io/PuzzleScript-MML/src/play.html?p=**debc0ce29ebc86df47d2fac5c5497999**
+
+    * The game is now shareable!
+
+
+## Can't do this
 
 * Keep BGM playing when the level changes.
 
