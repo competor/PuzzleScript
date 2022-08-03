@@ -11,6 +11,7 @@
 
     h3{
       margin-left: 16px;
+      background: linear-gradient(transparent 70%, #ebffbb 70%);
     }
     p{
       margin-left: 32px;
@@ -102,11 +103,15 @@ t120 q50 v40
       <p>tempo (default: 120) <span class="sample">e.g. t140 cdefgab&lt;c</span></p>
       <h3>v(\d+)?</h3>
       <p>velocity (default: 100) <span class="sample">e.g. v75 c v50 e v25 g</span></p>
+      <h3>@([1234]/)</h3>
+      <p>tone (default: 1)</p>
+      <p>1 = sine, 2 = square, 3 = sawtooth, 4 = triangle. <span class="sample">e.g. @1 ef @2 ef @3 ef @4 ef</span></p>
       <h3>$</h3>
       <p>infinite loop <span class="sample">e.g. l2 $ [fa&lt;ce] [gb&lt;d] [egb&lt;d] [ea&lt;c]</span></p>
       <h3>/: ... | ... :/(\d+)?</h3>
       <p>loop (default: 2)</p>
-      <p>commands after | are skipped in the last loop <span class="sample">e.g. l2 /: [fa&lt;ce] [gb&lt;d] [egb&lt;d] | [ea&lt;c] :/4 [eg&lt;c]</span></p>
+      <p>commands after | are skipped in the last loop.</p>
+      <p><span class="sample">e.g. l2 /: [fa&lt;ce] [gb&lt;d] [egb&lt;d] | [ea&lt;c] :/4 [eg&lt;c]</span></p>
       <h3>;</h3>
       <p>multi track <span class="sample">e.g. l4o4cde;l6o5cdefgab</span></p>
     </div>

@@ -2982,7 +2982,7 @@ function processInput(dir,dontDoWin,dontModify) {
 	        	playSound(seedsToPlay_CanMove[i]);
         }
         for (var i=0;i<mmlsToPlay_CanMove.length;i++) {
-				playMusic(mmlsToPlay_CantMove[i]); 
+				playMusic(mmlsToPlay_CanMove[i]); 
 		}
 
         for (var i=0;i<state.sfx_CreationMasks.length;i++) {

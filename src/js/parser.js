@@ -253,6 +253,8 @@ var codeMirrorFn = function() {
     const musicverbs_directional = ['move','cantmove'];
     const reg_soundverbs_directional = /(move|cantmove)\b[\p{Z}\s]*/u;
     const reg_soundverbs_nondirectional = /(action|create|destroy)\b[\p{Z}\s]*/u;
+    const reg_musicverbs_directional = /(move|cantmove)\b[\p{Z}\s]*/u;
+    const reg_musicverbs_nondirectional = /(action|create|destroy)\b[\p{Z}\s]*/u;
     const reg_soundevents = /(undo|restart|titlescreen|startgame|cancel|endgame|startlevel|endlevel|showmessage|closemessage|sfx0|sfx1|sfx2|sfx3|sfx4|sfx5|sfx6|sfx7|sfx8|sfx9|sfx10)\b[\p{Z}\s]*/u;
     const reg_musicevents = /(undo|restart|titlescreen|startgame|cancel|endgame|startlevel|endlevel|showmessage|closemessage|bgm0|bgm1|bgm2|bgm3|bgm4|bgm5|bgm6|bgm7|bgm8|bgm9|bgm10)\b[\p{Z}\s]*/u;
 
@@ -1271,7 +1273,7 @@ var codeMirrorFn = function() {
 
                     break;
                 }
-            case 'musics': // competor
+            case 'musics':
                 {
                     /*
                     SOUND DEFINITION:
@@ -1440,7 +1442,7 @@ var codeMirrorFn = function() {
                                     }
                                 } else {
                                     //only match seed
-                                    var is_seed = stream.match(reg_musicseed, true);
+                                    var is_seed = stream.match(reg_mml, true);
                                     if (is_seed !== null){
                                         tokentype = 'MUSIC';
                                         state.current_line_wip_array.push([is_seed[0].trim(),tokentype]);
