@@ -85,17 +85,17 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 ## SHARE link
 
-* Now you can https://competor.github.io/PuzzleScript-MML/src/play.html?p=debc0ce29ebc86df47d2fac5c5497999
+* Now you can share your puzzle! [(Example)](https://competor.github.io/PuzzleScript-MML/src/play.html?p=debc0ce29ebc86df47d2fac5c5497999)
 
     * Upload your script for [Github Gist](https://gist.github.com/)
 
     * Modify filename to **script.txt** and create secret/public gist.
 
-    * Copy the ID at the end of the gist: https://gist.github.com/yourname/**debc0ce29ebc86df47d2fac5c5497999**
+    * Copy the ID at the end of the gist: https://gist.github.com/(yourname)/debc0ce29ebc86df47d2fac5c5497999
 
-    * Paste the ID at the end of this URL: https://competor.github.io/PuzzleScript-MML/src/play.html?p=**debc0ce29ebc86df47d2fac5c5497999**
+    * Paste the ID at the end of this URL: https://competor.github.io/PuzzleScript-MML/src/play.html?p=(pastehere)
 
-    * The game is now shareable!
+    * The game is now shareable! https://competor.github.io/PuzzleScript-MML/src/play.html?p=debc0ce29ebc86df47d2fac5c5497999
 
 
 ## Can't do this
@@ -114,7 +114,9 @@ For example, `bgm1 "t120 v80 l8 o4 cdefg>gfedc"` represents `tempo=120 volume=80
 
 ## Known bugs
 
-* When you click EXPORT to make html, `titlescreen` BGM doesn't be played, because of ["Autoplay policy"](https://developer.chrome.com/blog/autoplay/) of your browser (You need to interact (click, tap, etc.) to allow the audio.) But when you upload this html file for itch.io or somewhere, and if you "click to start" the game, it will work correctly.
+* Mute button won't work.
+
+* When you click EXPORT or SHARE your file, `titlescreen` BGM doesn't be played, because of ["Autoplay policy"](https://developer.chrome.com/blog/autoplay/) of your browser (You need to interact (click, tap, etc.) to allow the audio.) But when you upload this html file for itch.io or somewhere, and if you "click to start" the game, it will work correctly.
 
 ## See Also
 
