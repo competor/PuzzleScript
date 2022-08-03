@@ -579,6 +579,12 @@ var audioContext = new AudioContext();
 var mmlEmitter = null;
 var mmlList = [];
 
+function convertToMML(text){
+	text = text.replace(/[\"]/g,"").replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&nbsp;/g,"");
+
+	return text;
+}
+
 function tryPlaySimpleMusic(musicname) {
 	if (state.bgm_Events[musicname]!==undefined) {
 		playMusic(state.bgm_Events[musicname]);
