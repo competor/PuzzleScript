@@ -133,11 +133,6 @@ editor.on('mousedown', function(cm, event) {
   }
 });
 
-function convertToMML(text){
-	text = text.replace(/[\"]/g,"").replace(/&gt;/g,'>').replace(/&lt;/g,'<').replace(/&nbsp;/g,"");
-
-	return text;
-}
 
 _editorCleanState = editor.getValue();
 
