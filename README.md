@@ -1,6 +1,6 @@
 # PuzzleScript-MML
 
-play music in puzzleScript. you can use as BGM or melodious SFX.
+Play music in PuzzleScript. you can use them as BGM or SFX.
 
 MML https://en.wikipedia.org/wiki/Music_Macro_Language
 
