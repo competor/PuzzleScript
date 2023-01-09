@@ -660,9 +660,14 @@ function tryPlayUndoMusic(){
 }
 
 function tryPlayRestartMusic(){
-	stopMusic();
-	tryPlaySimpleMusic("startlevel");
-	tryPlaySimpleMusic("restart");
+	if(state.metadata.do_not_stop_music_on_restart!==undefined){
+		tryPlaySimpleMusic("restart");
+	} else {
+		stopMusic();
+		tryPlaySimpleMusic("startlevel");
+		tryPlaySimpleMusic("restart");
+	}
+
 }
 
 function tryPlayShowMessageMusic(){
@@ -3070,6 +3075,10 @@ function processInput(dir,dontDoWin,dontModify) {
 			    verbose_logging=old_verbose_logging;
 			    messagetext = oldmessagetext;
 		    }   
+
+			if (level.commandQueue.indexOf('stopmusic')>=0){
+				stopMusic();
+			}
 		}
 		
 		if (verbose_logging) { 
