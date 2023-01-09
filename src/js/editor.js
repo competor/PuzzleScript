@@ -94,9 +94,6 @@ var editor = window.CodeMirror.fromTextArea(code, {
 });
 
 
-// var audioContext = new AudioContext();
-// var mmlEmitter = null;
-
 editor.on('mousedown', function(cm, event) {
   if (event.target.className == 'cm-SOUND') {
     var seed = parseInt(event.target.innerHTML);
