@@ -10,6 +10,10 @@ function playNote(e) {
     var sustainTime = playbackTime + e.duration * (e.quantize / 100);
     var releaseTime = sustainTime + 0.2;
     var volume = 0.25 * (e.velocity / 100);
+
+    if (muted){
+      volume = 0;
+    }
   
     osc.frequency.value = mtof(e.noteNumber);
     switch (e.wave){
