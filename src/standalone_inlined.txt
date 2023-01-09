@@ -8683,7 +8683,11 @@ function playNote(e) {
     var sustainTime = playbackTime + e.duration * (e.quantize / 100);
     var releaseTime = sustainTime + 0.2;
     var volume = 0.25 * (e.velocity / 100);
-  
+
+    if (muted){
+      volume = 0;
+    }
+
     osc.frequency.value = mtof(e.noteNumber);
     switch (e.wave){
       case 1:
@@ -18680,6 +18684,9 @@ function onKeyDown(event) {
     if (canDump===true) {
         if (event.keyCode===74 && (event.ctrlKey||event.metaKey)) {//ctrl+j
             dumpTestCase();
+            prevent(event);
+        }  else if (event.keyCode===81 && (event.ctrlKey||event.metaKey)) {//ctrl+s
+            stopMusic();
             prevent(event);
         } else if (event.keyCode===75 && (event.ctrlKey||event.metaKey)) {//ctrl+k
             makeGIF();

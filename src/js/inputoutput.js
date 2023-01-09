@@ -427,6 +427,9 @@ function onKeyDown(event) {
         if (event.keyCode===74 && (event.ctrlKey||event.metaKey)) {//ctrl+j
             dumpTestCase();
             prevent(event);
+        }  else if (event.keyCode===81 && (event.ctrlKey||event.metaKey)) {//ctrl+s
+            stopMusic();
+            prevent(event);
         } else if (event.keyCode===75 && (event.ctrlKey||event.metaKey)) {//ctrl+k
             makeGIF();
             prevent(event);
@@ -442,7 +445,7 @@ function onKeyDown(event) {
 				rebuildClick();
 			}
 			prevent(event);
-		}
+		} 
 	}
 }
 
