@@ -154,6 +154,7 @@ t120 q50 v40
     <script>
       var audioContext = new AudioContext();
       var mmlEmitter = null;
+      var muted = 0;
 
       function stopMusic() {
         if (mmlEmitter) {
@@ -163,6 +164,7 @@ t120 q50 v40
 
       function playMusic() {
         stopMusic();
+        
 
         var mml = convertToMML(document.getElementById("editor").value);
 
