@@ -869,7 +869,7 @@ function setGameState(_state, command, randomseed) {
 	canvasResize();
 
 
-	if (state.sounds.length==0 && state.musics.length==0){
+	if (state.sounds.length==0 && state.music.length==0){
 		killAudioButton();
 	} else {
 		showAudioButton();

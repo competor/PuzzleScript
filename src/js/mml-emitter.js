@@ -1492,7 +1492,7 @@ var MMLParser = (function () {
 
       return {
         type: _Syntax2["default"].Wave,
-        value: this._readArgument(/[1234]/)
+        value: this._readArgument(/[123456]/)
       };
     }
   }, {
@@ -1719,6 +1719,7 @@ var Scanner = (function () {
     value: function throwUnexpectedToken() {
       var identifier = this.peek() || "ILLEGAL";
 
+      console.log("Unexpected command character: " + identifier);
       throw new SyntaxError("Unexpected token: " + identifier);
     }
   }]);
