@@ -2755,8 +2755,8 @@ function generateMusicData(state){
     var bgm_MovementMasks = state.collisionLayers.map(x => []);
     var bgm_MovementFailureMasks = [];
 
-    for (var i = 0; i < state.musics.length; i++) {
-        var music = state.musics[i];
+    for (var i = 0; i < state.music.length; i++) {
+        var music = state.music[i];
         if (music.length <= 1) {
             continue;
         }

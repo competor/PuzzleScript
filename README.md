@@ -8,7 +8,7 @@ MMLEmitter https://github.com/mohayonao/mml-emitter (MIT License)
 
 ## New Features:
 
-### Added `MUSICS` Section 
+### Added `MUSIC` Section 
 
 To write and play MML music in game. Use `bgm0` to `bgm999`; You can also use the same keywords as in the SOUNDS section. You can choose 4 simple tones(sine, square, sawtooth, triangle).
 
@@ -32,7 +32,7 @@ Right-hand Side `stopmusic` will stop all the music in game instantly.
 
 ## How to use:
 
-(1) Add `MUSICS` section after `SOUNDS` section.
+(1) Add `MUSIC` section after `SOUNDS` section.
 
 (2) Select `bgm0` - `bgm999` and write MML between `" "` in 1-line. See also [MML Editor](https://competor.github.io/PuzzleScript-MML/src/mmleditor.html).
 

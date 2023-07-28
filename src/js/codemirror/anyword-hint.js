@@ -249,7 +249,7 @@
                         }
                         break;
                     }
-                case 'musics':
+                case 'music':
                     {
                         /*
                         MUSICEVENT MUSIC 
