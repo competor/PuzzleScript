@@ -86,3 +86,5 @@ For example, `bgm0 "t120 v80 l8 o4 cdefg^^r > gfedc^^r"` represents `tempo=120 v
 * MMLEmitter dev's blog post: [Web Audio API用のMMLイベントシーケンサー wamml です](https://mohayonao.hatenablog.com/entry/2014/08/18/135210)
 
 * [Web Audio API 解説](https://www.g200kg.com/jp/docs/webaudio/index.html)
+
+* [Synthesising Sounds with Web Audio API](https://sonoport.github.io/synthesising-sounds-webaudio.html)
